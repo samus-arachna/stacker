@@ -7,9 +7,9 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
     private OrthographicCamera camera;
@@ -36,19 +36,18 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
         modelInstance = new ModelInstance(box, 0, 0, 0);
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        environment.add(new PointLight().set(0.8f, 0.8f, 0.8f, 2f, 0f, 0f, 10f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
         Gdx.input.setInputProcessor(this);
     }
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
-
+        //pointLight.position.rotate(Vector3.Z, Gdx.graphics.getDeltaTime() * 90f);
         camera.update();
         modelBatch.begin(camera);
-        modelBatch.render(modelInstance);
+        modelBatch.render(modelInstance, environment);
         modelBatch.end();
     }
 
