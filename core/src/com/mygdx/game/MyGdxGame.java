@@ -21,11 +21,13 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void create() {
+        // setup camera
         camera = new OrthographicCamera(640, 480);
         camera.position.set(5f, 5f, 5f);
         camera.lookAt(0f, 0f, 0f);
         camera.zoom = 0.03f;
 
+        // setup model
         modelBatch = new ModelBatch();
         modelBuilder = new ModelBuilder();
         Model box = modelBuilder.createBox(
@@ -34,9 +36,11 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
         );
         modelInstance = new ModelInstance(box, 0, 0, 0);
+
+        // setup env
         environment = new Environment();
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -5.8f, -0.2f));
 
         Gdx.input.setInputProcessor(this);
     }
@@ -44,7 +48,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
     @Override
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
-        //pointLight.position.rotate(Vector3.Z, Gdx.graphics.getDeltaTime() * 90f);
         camera.update();
         modelBatch.begin(camera);
         modelBatch.render(modelInstance, environment);
