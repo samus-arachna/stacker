@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
     private OrthographicCamera camera;
@@ -18,6 +20,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
     private Model box;
     private ModelInstance modelInstance;
     private Environment environment;
+    private ShapeRenderer shapeRenderer;
 
     @Override
     public void create() {
@@ -42,6 +45,11 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -5.8f, -0.2f));
 
+
+        // setup background gradient
+        shapeRenderer = new ShapeRenderer();
+
+        // setup input
         Gdx.input.setInputProcessor(this);
     }
 
@@ -49,6 +57,13 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
     public void render() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
+
+        shapeRenderer.begin(ShapeType.Filled);
+        Color c1 = new Color(1, 1, 1, 1);
+        Color c2 = new Color(1, 0, 0, 1);
+        shapeRenderer.rect(0f, 0f, 640f, 480f, c2, c2, c1, c1);
+        shapeRenderer.end();
+
         modelBatch.begin(camera);
         modelBatch.render(modelInstance, environment);
         modelBatch.end();
