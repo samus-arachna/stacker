@@ -9,9 +9,10 @@ import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.graphics.g3d.environment.PointLight;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
-    private PerspectiveCamera camera;
+    private OrthographicCamera camera;
     private ModelBatch modelBatch;
     private ModelBuilder modelBuilder;
     private Model box;
@@ -20,22 +21,22 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void create() {
-        camera = new PerspectiveCamera(75, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.position.set(0f, 0f, 3f);
+        camera = new OrthographicCamera(640, 480);
+        camera.position.set(5f, 5f, 5f);
         camera.lookAt(0f, 0f, 0f);
-        camera.near = 0.1f;
-        camera.far = 300f;
+        camera.zoom = 0.03f;
 
-        modelBatch= new ModelBatch();
+        modelBatch = new ModelBatch();
         modelBuilder = new ModelBuilder();
         Model box = modelBuilder.createBox(
-                2f, 2f, 2f,
+                5f, 2f, 5f,
                 new Material(ColorAttribute.createDiffuse(Color.BLUE)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
         );
         modelInstance = new ModelInstance(box, 0, 0, 0);
         environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        environment.add(new PointLight().set(0.8f, 0.8f, 0.8f, 2f, 0f, 0f, 10f));
 
         Gdx.input.setInputProcessor(this);
     }
