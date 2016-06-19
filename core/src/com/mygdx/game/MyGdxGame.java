@@ -26,16 +26,17 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
     public void create() {
         // setup camera
         camera = new OrthographicCamera(640, 480);
-        camera.position.set(5f, 5f, 5f);
+        camera.position.set(5f, 7f, 5f);
         camera.lookAt(0f, 0f, 0f);
         camera.zoom = 0.03f;
 
         // setup model
         modelBatch = new ModelBatch();
         modelBuilder = new ModelBuilder();
+        Color boxColor = new Color(157/255f, 227/255f, 255/255f, 1);
         Model box = modelBuilder.createBox(
                 5f, 2f, 5f,
-                new Material(ColorAttribute.createDiffuse(Color.BLUE)),
+                new Material(ColorAttribute.createDiffuse(boxColor)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
         );
         modelInstance = new ModelInstance(box, 0, 0, 0);
@@ -59,9 +60,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
         camera.update();
 
         shapeRenderer.begin(ShapeType.Filled);
-        Color c1 = new Color(1, 1, 1, 1);
-        Color c2 = new Color(1, 0, 0, 1);
-        shapeRenderer.rect(0f, 0f, 640f, 480f, c2, c2, c1, c1);
+        Color c1 = new Color(255/255f, 90/255f, 90/255f, 1);
+        Color c2 = new Color(255/255f, 242/255f, 153/255f, 1);
+        shapeRenderer.rect(0f, 0f, 640f, 680f, c2, c2, c1, c1);
         shapeRenderer.end();
 
         modelBatch.begin(camera);
