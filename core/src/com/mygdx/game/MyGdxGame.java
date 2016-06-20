@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.utils.Array;
 
 public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
     private OrthographicCamera camera;
@@ -19,6 +20,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
     private ModelBuilder modelBuilder;
     private Model box;
     private ModelInstance modelInstance;
+    public Array<ModelInstance> instances = new Array<ModelInstance>();
     private Environment environment;
     private ShapeRenderer shapeRenderer;
 
@@ -40,6 +42,9 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
         );
         modelInstance = new ModelInstance(box, 0, 0, 0);
+        instances.add(modelInstance);
+        modelInstance = new ModelInstance(box, 0, 2, -7);
+        instances.add(modelInstance);
 
         // setup env
         environment = new Environment();
@@ -66,7 +71,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
         shapeRenderer.end();
 
         modelBatch.begin(camera);
-        modelBatch.render(modelInstance, environment);
+        modelBatch.render(instances, environment);
         modelBatch.end();
     }
 
@@ -81,6 +86,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
         return true;
     }
+
+
 
     @Override
     public boolean keyUp(int keycode) {
