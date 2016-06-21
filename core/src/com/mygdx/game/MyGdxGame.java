@@ -20,9 +20,12 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
     private ModelBuilder modelBuilder;
     private Model box;
     private ModelInstance modelInstance;
-    public Array<ModelInstance> instances = new Array<ModelInstance>();
+    private Array<ModelInstance> instances = new Array<ModelInstance>();
     private Environment environment;
     private ShapeRenderer shapeRenderer;
+
+    private char boxMove = '+';
+    private Vector3 boxPosition;
 
     @Override
     public void create() {
@@ -37,13 +40,13 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
         modelBuilder = new ModelBuilder();
         Color boxColor = new Color(157/255f, 227/255f, 255/255f, 1);
         Model box = modelBuilder.createBox(
-                5f, 2f, 5f,
+                5f, 1f, 5f,
                 new Material(ColorAttribute.createDiffuse(boxColor)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
         );
         modelInstance = new ModelInstance(box, 0, 0, 0);
         instances.add(modelInstance);
-        modelInstance = new ModelInstance(box, 0, 2, -7);
+        modelInstance = new ModelInstance(box, 0, 1, -7);
         instances.add(modelInstance);
 
         // setup env
@@ -57,6 +60,8 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
         // setup input
         Gdx.input.setInputProcessor(this);
+
+        boxPosition = new Vector3();
     }
 
     @Override
@@ -64,11 +69,30 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
 
+        // render bg
         shapeRenderer.begin(ShapeType.Filled);
         Color c1 = new Color(255/255f, 90/255f, 90/255f, 1);
         Color c2 = new Color(255/255f, 242/255f, 153/255f, 1);
         shapeRenderer.rect(0f, 0f, 640f, 680f, c2, c2, c1, c1);
         shapeRenderer.end();
+
+        // moving box around
+        if (boxMove == '+') {
+            instances.peek().transform.getTranslation(boxPosition);
+            instances.peek().transform.trn(0, 0, 0.1f);
+
+            if (boxPosition.z > 7) {
+                boxMove = '-';
+            }
+        } else {
+            instances.peek().transform.getTranslation(boxPosition);
+            instances.peek().transform.trn(0, 0, -0.1f);
+
+            if (boxPosition.z < -7) {
+                boxMove = '+';
+            }
+        }
+
 
         modelBatch.begin(camera);
         modelBatch.render(instances, environment);
