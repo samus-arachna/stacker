@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g3d.*;
@@ -14,7 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.utils.Array;
 
-public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
+public class StackerGame extends ApplicationAdapter implements InputProcessor {
     private OrthographicCamera camera;
     private ModelBatch modelBatch;
     private ModelBuilder modelBuilder;
@@ -24,30 +23,37 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
     private Environment environment;
     private ShapeRenderer shapeRenderer;
 
+    // colors
+    Color boxColor = new Color(157/255f, 227/255f, 255/255f, 1);
+
+    // game logic
     private char boxMove = '+';
     private Vector3 boxPosition;
+    private int boxLevel = 0;
+    private float cameraLevel = 7f;
+
 
     @Override
     public void create() {
         // setup camera
         camera = new OrthographicCamera(640, 480);
-        camera.position.set(5f, 7f, 5f);
+        camera.position.set(5f, cameraLevel, 5f);
         camera.lookAt(0f, 0f, 0f);
         camera.zoom = 0.03f;
 
         // setup model
         modelBatch = new ModelBatch();
         modelBuilder = new ModelBuilder();
-        Color boxColor = new Color(157/255f, 227/255f, 255/255f, 1);
+
         Model box = modelBuilder.createBox(
                 5f, 1f, 5f,
                 new Material(ColorAttribute.createDiffuse(boxColor)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
         );
-        modelInstance = new ModelInstance(box, 0, 0, 0);
+        modelInstance = new ModelInstance(box, 0, boxLevel++, 0);
         instances.add(modelInstance);
-        modelInstance = new ModelInstance(box, 0, 1, -7);
-        instances.add(modelInstance);
+
+        spawnNewBox();
 
         // setup env
         environment = new Environment();
@@ -69,13 +75,31 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
 
-        // render bg
+        setupBg();
+
+        moveBox();
+
+        modelBatch.begin(camera);
+        modelBatch.render(instances, environment);
+        modelBatch.end();
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        spawnNewBox();
+
+        return false;
+    }
+
+    private void setupBg() {
         shapeRenderer.begin(ShapeType.Filled);
         Color c1 = new Color(255/255f, 90/255f, 90/255f, 1);
         Color c2 = new Color(255/255f, 242/255f, 153/255f, 1);
         shapeRenderer.rect(0f, 0f, 640f, 680f, c2, c2, c1, c1);
         shapeRenderer.end();
+    }
 
+    private void moveBox() {
         // moving box around
         if (boxMove == '+') {
             instances.peek().transform.getTranslation(boxPosition);
@@ -84,7 +108,7 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
             if (boxPosition.z > 7) {
                 boxMove = '-';
             }
-        } else {
+        } else if (boxMove == '-') {
             instances.peek().transform.getTranslation(boxPosition);
             instances.peek().transform.trn(0, 0, -0.1f);
 
@@ -92,26 +116,23 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
                 boxMove = '+';
             }
         }
+    }
 
-
-        modelBatch.begin(camera);
-        modelBatch.render(instances, environment);
-        modelBatch.end();
+    private void spawnNewBox() {
+        Model box = modelBuilder.createBox(
+                5f, 1f, 5f,
+                new Material(ColorAttribute.createDiffuse(boxColor)),
+                VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
+        );
+        modelInstance = new ModelInstance(box, 0, boxLevel++, -7);
+        instances.add(modelInstance);
+        camera.position.set(5f, cameraLevel++, 5f);
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.LEFT) {
-            camera.rotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f), 1f);
-        }
-        if (keycode == Input.Keys.RIGHT) {
-            camera.rotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f), -1f);
-        }
-
-        return true;
+        return false;
     }
-
-
 
     @Override
     public boolean keyUp(int keycode) {
@@ -120,11 +141,6 @@ public class MyGdxGame extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         return false;
     }
 
