@@ -99,18 +99,20 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         shapeRenderer.end();
     }
 
+    // moving box around
     private void moveBox() {
-        // moving box around
+        ModelInstance lastBox = instances.peek();
+
         if (boxMove == '+') {
-            instances.peek().transform.getTranslation(boxPosition);
-            instances.peek().transform.trn(0, 0, 0.1f);
+            lastBox.transform.getTranslation(boxPosition);
+            lastBox.transform.trn(0, 0, 0.1f);
 
             if (boxPosition.z > 7) {
                 boxMove = '-';
             }
         } else if (boxMove == '-') {
-            instances.peek().transform.getTranslation(boxPosition);
-            instances.peek().transform.trn(0, 0, -0.1f);
+            lastBox.transform.getTranslation(boxPosition);
+            lastBox.transform.trn(0, 0, -0.1f);
 
             if (boxPosition.z < -7) {
                 boxMove = '+';
