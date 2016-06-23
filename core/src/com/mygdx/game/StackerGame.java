@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 
 public class StackerGame extends ApplicationAdapter implements InputProcessor {
@@ -86,9 +87,34 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        calculateParts();
         spawnNewBox();
 
         return false;
+    }
+
+    private void calculateParts() {
+        int size = instances.size;
+        ModelInstance topBox = instances.peek();
+        ModelInstance lastBox = instances.get(size-2);
+
+        topBox.transform.getTranslation(boxPosition);
+        float topBoxPosition = boxPosition.z;
+        BoundingBox topBound = new BoundingBox();
+        topBox.calculateBoundingBox(topBound);
+
+        System.out.println(topBound.min); // TEST
+
+        lastBox.transform.getTranslation(boxPosition);
+        float lastBoxPosition = boxPosition.z;
+        BoundingBox lastBound = new BoundingBox();
+        lastBox.calculateBoundingBox(lastBound);
+
+        System.out.println(lastBound.min); // TEST
+
+        System.out.println("top: " + topBoxPosition);
+        System.out.println("last: " + lastBoxPosition);
+        System.out.println("");
     }
 
     private void setupBg() {
