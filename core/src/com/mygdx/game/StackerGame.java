@@ -100,11 +100,13 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         ModelInstance topBox = instances.peek();
         ModelInstance lastBox = instances.get(size-2);
 
+        // calculate top box stuff
         topBox.transform.getTranslation(boxPosition);
         float topBoxPosition = boxPosition.z;
         BoundingBox topBound = new BoundingBox();
         topBox.calculateBoundingBox(topBound);
 
+        // calculate last box stuff
         lastBox.transform.getTranslation(boxPosition);
         float lastBoxPosition = boxPosition.z;
         BoundingBox lastBound = new BoundingBox();
@@ -116,8 +118,19 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         System.out.println("last position: " + lastBoxPosition);
         System.out.println("");
 
+        // stuff happening here
+        if (topBoxPosition != lastBoxPosition) {
+            float topSizeZ = abs(topBound.min.z) + abs(topBound.max.z);
+            float resizeBy = abs(topBoxPosition - lastBoxPosition);
+            float newSize = topSizeZ - resizeBy;
+
+            System.out.println("Top size z: " + topSizeZ);
+            System.out.println("Resize by: " + resizeBy);
+            System.out.println("New size: " + newSize);
+        }
+
         // test resize
-        topBox.transform.scl(1f, 1f, 0.8f);
+        //topBox.transform.scl(1f, 1f, 0.8f);
     }
 
     private void setupBg() {
