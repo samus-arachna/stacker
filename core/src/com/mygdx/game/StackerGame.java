@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
 
+import static java.lang.Math.abs;
+
 public class StackerGame extends ApplicationAdapter implements InputProcessor {
     private OrthographicCamera camera;
     private ModelBatch modelBatch;
@@ -103,18 +105,19 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         BoundingBox topBound = new BoundingBox();
         topBox.calculateBoundingBox(topBound);
 
-        System.out.println(topBound.min); // TEST
-
         lastBox.transform.getTranslation(boxPosition);
         float lastBoxPosition = boxPosition.z;
         BoundingBox lastBound = new BoundingBox();
         lastBox.calculateBoundingBox(lastBound);
 
-        System.out.println(lastBound.min); // TEST
-
-        System.out.println("top: " + topBoxPosition);
-        System.out.println("last: " + lastBoxPosition);
+        System.out.println("top bound z: " + (abs(topBound.min.z) + abs(topBound.max.z)));
+        System.out.println("last bound z: " + (abs(lastBound.min.z) + abs(lastBound.max.z)));
+        System.out.println("top position: " + topBoxPosition);
+        System.out.println("last position: " + lastBoxPosition);
         System.out.println("");
+
+        // test resize
+        topBox.transform.scl(1f, 1f, 0.8f);
     }
 
     private void setupBg() {
