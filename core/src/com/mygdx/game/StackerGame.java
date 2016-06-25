@@ -120,17 +120,24 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
 
         // stuff happening here
         if (topBoxPosition != lastBoxPosition) {
-            float topSizeZ = abs(topBound.min.z) + abs(topBound.max.z);
+            float lastSizeZ = abs(lastBound.min.z) + abs(lastBound.max.z);
             float resizeBy = abs(topBoxPosition - lastBoxPosition);
-            float newSize = topSizeZ - resizeBy;
+            float newSize = lastSizeZ - resizeBy;
 
-            System.out.println("Top size z: " + topSizeZ);
             System.out.println("Resize by: " + resizeBy);
-            System.out.println("New size: " + newSize);
-        }
+            System.out.println("New size must be: " + newSize);
 
-        // test resize
-        //topBox.transform.scl(1f, 1f, 0.8f);
+            if (newSize < 0) {
+                System.out.println("You Lost!");
+                System.out.println("");
+            } else {
+                // calculate new size by scaling factor
+                float scaleBy = (newSize / ( lastSizeZ / 100)) / 100;
+                topBox.transform.scl(1f, 1f, scaleBy);
+                System.out.println("Scale z by: " + scaleBy);
+                System.out.println("");
+            }
+        }
     }
 
     private void setupBg() {
