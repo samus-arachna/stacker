@@ -56,7 +56,7 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         modelInstance = new ModelInstance(box, 0, boxLevel++, 0);
         instances.add(modelInstance);
 
-        spawnNewBox();
+        spawnNewBox(5f, 1f, 5f);
 
         // setup env
         environment = new Environment();
@@ -90,7 +90,6 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         calculateParts();
-        spawnNewBox();
 
         return false;
     }
@@ -116,7 +115,6 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         System.out.println("last bound z: " + (abs(lastBound.min.z) + abs(lastBound.max.z)));
         System.out.println("top position: " + topBoxPosition);
         System.out.println("last position: " + lastBoxPosition);
-        System.out.println("");
 
         // stuff happening here
         if (topBoxPosition != lastBoxPosition) {
@@ -126,26 +124,17 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
 
             System.out.println("Resize by: " + resizeBy);
             System.out.println("New size must be: " + newSize);
+            System.out.println("");
 
             if (newSize < 0) {
                 System.out.println("You Lost!");
                 System.out.println("");
             } else {
-                // calculate new size by scaling factor
-                float scaleBy = (newSize / ( lastSizeZ / 100)) / 100;
-                topBox.transform.scl(1f, 1f, scaleBy);
-                System.out.println("Scale z by: " + scaleBy);
-                System.out.println("");
+                instances.pop();
+                spawnSameBox(5f, 1f, newSize);
+                spawnNewBox(5f, 1f, newSize);
             }
         }
-    }
-
-    private void setupBg() {
-        shapeRenderer.begin(ShapeType.Filled);
-        Color c1 = new Color(255/255f, 90/255f, 90/255f, 1);
-        Color c2 = new Color(255/255f, 242/255f, 153/255f, 1);
-        shapeRenderer.rect(0f, 0f, 640f, 680f, c2, c2, c1, c1);
-        shapeRenderer.end();
     }
 
     // moving box around
@@ -169,15 +158,34 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         }
     }
 
-    private void spawnNewBox() {
+    private void spawnNewBox(float x, float y, float z) {
         Model box = modelBuilder.createBox(
-                5f, 1f, 5f,
+                x, y, z,
                 new Material(ColorAttribute.createDiffuse(boxColor)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
         );
         modelInstance = new ModelInstance(box, 0, boxLevel++, -7);
         instances.add(modelInstance);
         camera.position.set(5f, cameraLevel++, 5f);
+    }
+
+    private void spawnSameBox(float x, float y, float z) {
+        Model box = modelBuilder.createBox(
+                x, y, z,
+                new Material(ColorAttribute.createDiffuse(boxColor)),
+                VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
+        );
+        modelInstance = new ModelInstance(box, 0, boxLevel-1, 0);
+        instances.add(modelInstance);
+        camera.position.set(5f, cameraLevel, 5f);
+    }
+
+    private void setupBg() {
+        shapeRenderer.begin(ShapeType.Filled);
+        Color c1 = new Color(255/255f, 90/255f, 90/255f, 1);
+        Color c2 = new Color(255/255f, 242/255f, 153/255f, 1);
+        shapeRenderer.rect(0f, 0f, 640f, 680f, c2, c2, c1, c1);
+        shapeRenderer.end();
     }
 
     @Override
