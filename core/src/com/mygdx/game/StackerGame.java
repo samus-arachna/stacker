@@ -131,6 +131,13 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
                 System.out.println("");
             } else {
                 instances.pop();
+
+                // TODO correct z position for same box
+                if (lastBoxPosition < topBoxPosition) {
+                    float leftCenter = (lastBoxPosition - lastBound.min.z) / 2;
+                    System.out.println("leftcorner: " + leftCenter);
+                }
+
                 spawnSameBox(5f, 1f, newSize);
                 spawnNewBox(5f, 1f, newSize);
             }
@@ -143,14 +150,14 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
 
         if (boxMove == '+') {
             lastBox.transform.getTranslation(boxPosition);
-            lastBox.transform.trn(0, 0, 0.1f);
+            lastBox.transform.trn(0, 0, 0.05f);
 
             if (boxPosition.z > 7) {
                 boxMove = '-';
             }
         } else if (boxMove == '-') {
             lastBox.transform.getTranslation(boxPosition);
-            lastBox.transform.trn(0, 0, -0.1f);
+            lastBox.transform.trn(0, 0, -0.05f);
 
             if (boxPosition.z < -7) {
                 boxMove = '+';
