@@ -20,14 +20,13 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
     private OrthographicCamera camera;
     private ModelBatch modelBatch;
     private ModelBuilder modelBuilder;
-    private Model box;
     private ModelInstance modelInstance;
     private Array<ModelInstance> instances = new Array<ModelInstance>();
     private Environment environment;
     private ShapeRenderer shapeRenderer;
 
     // colors
-    Color boxColor = new Color(157/255f, 227/255f, 255/255f, 1);
+    private Color boxColor = new Color(157/255f, 227/255f, 255/255f, 1);
 
     // game logic
     private char boxMove = '+';
@@ -78,7 +77,7 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
 
-        setupBg();
+        //setupBg();
 
         moveBox();
 
@@ -96,25 +95,20 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
 
     private void calculateParts() {
         int size = instances.size;
-        ModelInstance topBox = instances.peek();
-        ModelInstance lastBox = instances.get(size-2);
 
         // calculate top box stuff
+        ModelInstance topBox = instances.peek();
         topBox.transform.getTranslation(boxPosition);
         float topBoxPosition = boxPosition.z;
         BoundingBox topBound = new BoundingBox();
         topBox.calculateBoundingBox(topBound);
 
         // calculate last box stuff
+        ModelInstance lastBox = instances.get(size-2);
         lastBox.transform.getTranslation(boxPosition);
         float lastBoxPosition = boxPosition.z;
         BoundingBox lastBound = new BoundingBox();
         lastBox.calculateBoundingBox(lastBound);
-
-        System.out.println("top bound z: " + (abs(topBound.min.z) + abs(topBound.max.z)));
-        System.out.println("last bound z: " + (abs(lastBound.min.z) + abs(lastBound.max.z)));
-        System.out.println("top position: " + topBoxPosition);
-        System.out.println("last position: " + lastBoxPosition);
 
         // stuff happening here
         if (topBoxPosition != lastBoxPosition) {
@@ -122,23 +116,22 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
             float resizeBy = abs(topBoxPosition - lastBoxPosition);
             float newSize = lastSizeZ - resizeBy;
 
-            System.out.println("Resize by: " + resizeBy);
-            System.out.println("New size must be: " + newSize);
-            System.out.println("");
-
             if (newSize < 0) {
                 System.out.println("You Lost!");
                 System.out.println("");
             } else {
                 instances.pop();
 
-                // TODO correct z position for same box
+                // TODO
                 if (lastBoxPosition < topBoxPosition) {
-                    float leftCenter = (lastBoxPosition - lastBound.min.z) / 2;
-                    System.out.println("leftcorner: " + leftCenter);
+                    float newPos = lastBound.max.z - (newSize / 2) + lastBoxPosition;
+                    spawnSameBox(5f, 1f, newSize, newPos);
+                } else {
+                    float newPos = lastBound.min.z + (newSize / 2) + lastBoxPosition;
+                    spawnSameBox(5f, 1f, newSize, newPos);
                 }
 
-                spawnSameBox(5f, 1f, newSize);
+                //spawnSameBox(5f, 1f, newSize);
                 spawnNewBox(5f, 1f, newSize);
             }
         }
@@ -150,14 +143,14 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
 
         if (boxMove == '+') {
             lastBox.transform.getTranslation(boxPosition);
-            lastBox.transform.trn(0, 0, 0.05f);
+            lastBox.transform.trn(0, 0, 0.1f);
 
             if (boxPosition.z > 7) {
                 boxMove = '-';
             }
         } else if (boxMove == '-') {
             lastBox.transform.getTranslation(boxPosition);
-            lastBox.transform.trn(0, 0, -0.05f);
+            lastBox.transform.trn(0, 0, -0.1f);
 
             if (boxPosition.z < -7) {
                 boxMove = '+';
@@ -176,13 +169,13 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         camera.position.set(5f, cameraLevel++, 5f);
     }
 
-    private void spawnSameBox(float x, float y, float z) {
+    private void spawnSameBox(float x, float y, float z, float pos) {
         Model box = modelBuilder.createBox(
                 x, y, z,
                 new Material(ColorAttribute.createDiffuse(boxColor)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
         );
-        modelInstance = new ModelInstance(box, 0, boxLevel-1, 0);
+        modelInstance = new ModelInstance(box, 0, boxLevel-1, pos);
         instances.add(modelInstance);
         camera.position.set(5f, cameraLevel, 5f);
     }
