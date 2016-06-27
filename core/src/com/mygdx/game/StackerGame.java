@@ -110,6 +110,7 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         BoundingBox lastBound = new BoundingBox();
         lastBox.calculateBoundingBox(lastBound);
 
+        // we are not interested in "pixel perfect" game
         float distance = abs(topBoxPosition - lastBoxPosition);
         if (distance < 0.3) {
             instances.pop();
