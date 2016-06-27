@@ -88,12 +88,12 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        calculateParts();
+        calculateBoxes();
 
         return false;
     }
 
-    private void calculateParts() {
+    private void calculateBoxes() {
         int size = instances.size;
 
         // calculate top box stuff
@@ -110,19 +110,22 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         BoundingBox lastBound = new BoundingBox();
         lastBox.calculateBoundingBox(lastBound);
 
-        // stuff happening here
+        // TODO
+
+
+        // move/spawning logic
         if (topBoxPosition != lastBoxPosition) {
             float lastSizeZ = abs(lastBound.min.z) + abs(lastBound.max.z);
             float resizeBy = abs(topBoxPosition - lastBoxPosition);
             float newSize = lastSizeZ - resizeBy;
 
             if (newSize < 0) {
+                // TODO
                 System.out.println("You Lost!");
                 System.out.println("");
             } else {
                 instances.pop();
 
-                // TODO
                 if (lastBoxPosition < topBoxPosition) {
                     float newPos = lastBound.max.z - (newSize / 2) + lastBoxPosition;
                     spawnSameBox(5f, 1f, newSize, newPos);
@@ -131,7 +134,6 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
                     spawnSameBox(5f, 1f, newSize, newPos);
                 }
 
-                //spawnSameBox(5f, 1f, newSize);
                 spawnNewBox(5f, 1f, newSize);
             }
         }
@@ -143,14 +145,14 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
 
         if (boxMove == '+') {
             lastBox.transform.getTranslation(boxPosition);
-            lastBox.transform.trn(0, 0, 0.1f);
+            lastBox.transform.trn(0, 0, 0.07f);
 
             if (boxPosition.z > 7) {
                 boxMove = '-';
             }
         } else if (boxMove == '-') {
             lastBox.transform.getTranslation(boxPosition);
-            lastBox.transform.trn(0, 0, -0.1f);
+            lastBox.transform.trn(0, 0, -0.07f);
 
             if (boxPosition.z < -7) {
                 boxMove = '+';
