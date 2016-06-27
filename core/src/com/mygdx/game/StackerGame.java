@@ -110,15 +110,12 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         BoundingBox lastBound = new BoundingBox();
         lastBox.calculateBoundingBox(lastBound);
 
-        // TODO
         float distance = abs(topBoxPosition - lastBoxPosition);
         if (distance < 0.3) {
-            System.out.println("distance is: " + distance);
+            instances.pop();
             float lastSizeZ = abs(lastBound.min.z) + abs(lastBound.max.z);
-            float newSize = lastSizeZ;
-            float newPos = lastBound.max.z - (newSize / 2) + lastBoxPosition;
-            spawnSameBox(5f, 1f, newSize, newPos);
-            spawnNewBox(5f, 1f, newSize);
+            spawnSameBox(5f, 1f, lastSizeZ, lastBoxPosition);
+            spawnNewBox(5f, 1f, lastSizeZ);
             return;
         }
 
