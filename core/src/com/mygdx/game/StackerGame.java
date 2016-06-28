@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import static java.lang.Math.abs;
 
 public class StackerGame extends ApplicationAdapter implements InputProcessor {
+    // environment
     private OrthographicCamera camera;
     private ModelBatch modelBatch;
     private ModelBuilder modelBuilder;
@@ -33,6 +34,7 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
     private Vector3 boxPosition;
     private int boxLevel = 0;
     private float cameraLevel = 7f;
+    private GameState state;
 
 
     @Override
@@ -46,7 +48,6 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         // setup model
         modelBatch = new ModelBatch();
         modelBuilder = new ModelBuilder();
-
         Model box = modelBuilder.createBox(
                 5f, 1f, 5f,
                 new Material(ColorAttribute.createDiffuse(boxColor)),
@@ -54,7 +55,6 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         );
         modelInstance = new ModelInstance(box, 0, boxLevel++, 0);
         instances.add(modelInstance);
-
         spawnNewBox(5f, 1f, 5f);
 
         // setup env
@@ -70,6 +70,9 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         Gdx.input.setInputProcessor(this);
 
         boxPosition = new Vector3();
+
+        // game state
+        state = GameState.PLAYING;
     }
 
     @Override
@@ -79,7 +82,9 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
 
         //setupBg();
 
-        moveBox();
+        if (state == GameState.PLAYING) {
+            moveBox();
+        }
 
         modelBatch.begin(camera);
         modelBatch.render(instances, environment);
@@ -127,9 +132,8 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
             float newSize = lastSizeZ - resizeBy;
 
             if (newSize < 0) {
-                // TODO
+                state = GameState.LOST;
                 System.out.println("You Lost!");
-                System.out.println("");
             } else {
                 instances.pop();
 
