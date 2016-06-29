@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
@@ -13,6 +14,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+
 
 import static java.lang.Math.abs;
 
@@ -35,6 +39,10 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
     private int boxLevel = 0;
     private float cameraLevel = 7f;
     private GameState state;
+
+    // score text
+    private int score;
+    private Label scoreLabel;
 
 
     @Override
@@ -73,6 +81,12 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
 
         // game state
         state = GameState.PLAYING;
+
+        // setup label score
+        BitmapFont font = new BitmapFont();
+        String text = "Score: 0";
+        LabelStyle style = new LabelStyle(font, Color.WHITE);
+
     }
 
     @Override
