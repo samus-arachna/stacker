@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.collision.BoundingBox;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
@@ -41,6 +42,7 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
     private GameState state;
 
     // score text
+    private Stage uiStage;
     private int score;
     private Label scoreLabel;
 
@@ -48,7 +50,7 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
     @Override
     public void create() {
         // setup camera
-        camera = new OrthographicCamera(640, 480);
+        camera = new OrthographicCamera(480, 800);
         camera.position.set(5f, cameraLevel, 5f);
         camera.lookAt(0f, 0f, 0f);
         camera.zoom = 0.03f;
@@ -83,10 +85,14 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
         state = GameState.PLAYING;
 
         // setup label score
+        uiStage = new Stage();
         BitmapFont font = new BitmapFont();
+        font.getData().setScale(2, 2);
         String text = "Score: 0";
         LabelStyle style = new LabelStyle(font, Color.WHITE);
-
+        scoreLabel = new Label(text, style);
+        scoreLabel.setPosition(340, 750);
+        uiStage.addActor(scoreLabel);
     }
 
     @Override
@@ -100,9 +106,13 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
             moveBox();
         }
 
+        // render models
         modelBatch.begin(camera);
         modelBatch.render(instances, environment);
         modelBatch.end();
+
+        // render ui
+        uiStage.draw();
     }
 
     @Override
@@ -136,6 +146,7 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
             float lastSizeZ = abs(lastBound.min.z) + abs(lastBound.max.z);
             spawnSameBox(5f, 1f, lastSizeZ, lastBoxPosition);
             spawnNewBox(5f, 1f, lastSizeZ);
+            incrementScore();
             return;
         }
 
@@ -160,8 +171,17 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
                 }
 
                 spawnNewBox(5f, 1f, newSize);
+
+                incrementScore();
             }
         }
+
+
+    }
+
+    private void incrementScore() {
+        score += 1;
+        scoreLabel.setText("Score: " + score);
     }
 
     // moving box around
