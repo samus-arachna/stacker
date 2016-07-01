@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.*;
@@ -23,7 +24,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 import static java.lang.Math.abs;
 
-public class StackerGame extends ApplicationAdapter implements InputProcessor {
+public class StackerGame extends Game implements InputProcessor {
     // environment
     private OrthographicCamera camera;
     private ModelBatch modelBatch;
@@ -51,6 +52,7 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void create() {
+
         // setup camera
         camera = new OrthographicCamera(480, 800);
         camera.position.set(5f, cameraLevel, 5f);
