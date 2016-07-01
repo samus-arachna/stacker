@@ -107,6 +107,14 @@ public class StackerGame extends ApplicationAdapter implements InputProcessor {
 
         //setupBg();
 
+        if (state == GameState.IN_MENU) {
+            // TODO
+        }
+
+        if (state == GameState.LOST) {
+            // TODO
+        }
+
         if (state == GameState.PLAYING) {
             moveBox();
         }
