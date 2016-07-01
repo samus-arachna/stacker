@@ -187,8 +187,6 @@ public class MainScreen implements InputProcessor, Screen {
                 incrementScore();
             }
         }
-
-
     }
 
     private void incrementScore() {
