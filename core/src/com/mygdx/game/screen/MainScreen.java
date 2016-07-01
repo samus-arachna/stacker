@@ -44,7 +44,7 @@ public class MainScreen implements InputProcessor, Screen {
     private float cameraLevel = 7f;
     private GameState state;
 
-    // score text
+    // text
     private Stage uiStage;
     private int score;
     private Label scoreLabel;
