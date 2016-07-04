@@ -46,7 +46,6 @@ public class MainScreen implements InputProcessor, Screen {
     private Vector3 boxPosition;
     private int boxLevel = 0;
     private float cameraLevel = 7f;
-    private GameState state;
 
     // text
     private Stage uiStage;
@@ -89,9 +88,6 @@ public class MainScreen implements InputProcessor, Screen {
 
         boxPosition = new Vector3();
 
-        // game state
-        state = GameState.PLAYING;
-
         // setup label score
         uiStage = new Stage();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSerif.ttf"));
@@ -113,17 +109,7 @@ public class MainScreen implements InputProcessor, Screen {
 
         //setupBg();
 
-        if (state == GameState.IN_MENU) {
-            // TODO
-        }
-
-        if (state == GameState.LOST) {
-            // TODO
-        }
-
-        if (state == GameState.PLAYING) {
-            moveBox();
-        }
+        moveBox();
 
         // render models
         modelBatch.begin(camera);
@@ -176,8 +162,8 @@ public class MainScreen implements InputProcessor, Screen {
             float newSize = lastSizeZ - resizeBy;
 
             if (newSize < 0) {
-                state = GameState.LOST;
                 System.out.println("You Lost!");
+                game.setScreen(new LostScreen(game));
             } else {
                 instances.pop();
 

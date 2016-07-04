@@ -51,8 +51,6 @@ public class MenuScreen implements InputProcessor, Screen {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("Touch Down!");
-
         game.setScreen(new MainScreen(game));
         return false;
     }
