@@ -20,8 +20,9 @@ public class LostScreen implements InputProcessor, Screen {
     // text
     private Stage uiStage;
     private Label menuLabel;
+    private Label finalScoreLabel;
 
-    public LostScreen(StackerGame game) {
+    public LostScreen(StackerGame game, int finalScore) {
         // setup game
         this.game = game;
 
@@ -32,14 +33,30 @@ public class LostScreen implements InputProcessor, Screen {
         uiStage = new Stage();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSerif.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+
+        // adding menu label text
         parameter.size = 24;
         BitmapFont font = generator.generateFont(parameter);
-        generator.dispose();
         String text = "              Game over.\nTap Screen To Play Again.";
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
         menuLabel = new Label(text, style);
         menuLabel.setPosition(90, 400);
+
+        // adding final score label text
+        parameter.size = 36;
+        font = generator.generateFont(parameter);
+        text = "Final score: " + finalScore;
+        style = new Label.LabelStyle(font, Color.WHITE);
+        finalScoreLabel = new Label(text, style);
+        finalScoreLabel.setPosition(125, 700);
+
+        // disposing of font generator
+        generator.dispose();
+
+
+        // adding ui actors
         uiStage.addActor(menuLabel);
+        uiStage.addActor(finalScoreLabel);
     }
 
     @Override

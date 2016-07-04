@@ -163,7 +163,7 @@ public class MainScreen implements InputProcessor, Screen {
 
             if (newSize < 0) {
                 System.out.println("You Lost!");
-                game.setScreen(new LostScreen(game));
+                game.setScreen(new LostScreen(game, score));
             } else {
                 instances.pop();
 
