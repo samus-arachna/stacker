@@ -35,10 +35,10 @@ public class LostScreen implements InputProcessor, Screen {
         parameter.size = 24;
         BitmapFont font = generator.generateFont(parameter);
         generator.dispose();
-        String text = "Game over.\nTap Screen To Play Again.";
+        String text = "              Game over.\nTap Screen To Play Again.";
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
         menuLabel = new Label(text, style);
-        menuLabel.setPosition(110, 400);
+        menuLabel.setPosition(90, 400);
         uiStage.addActor(menuLabel);
     }
 
