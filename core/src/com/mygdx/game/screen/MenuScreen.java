@@ -1,6 +1,7 @@
 package com.mygdx.game.screen;
 
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -10,14 +11,24 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.mygdx.game.StackerGame;
 
 public class MenuScreen implements InputProcessor, Screen {
+
+    // game object
+    private StackerGame game;
 
     // text
     private Stage uiStage;
     private Label menuLabel;
 
-    public MenuScreen() {
+    public MenuScreen(StackerGame game) {
+        // setup game
+        this.game = game;
+
+        // setup input
+        Gdx.input.setInputProcessor(this);
+
         // setup label score
         uiStage = new Stage();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSerif.ttf"));
@@ -40,7 +51,9 @@ public class MenuScreen implements InputProcessor, Screen {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println("Tapped!");
+        System.out.println("Touch Down!");
+
+        game.setScreen(new MainScreen(game));
         return false;
     }
 

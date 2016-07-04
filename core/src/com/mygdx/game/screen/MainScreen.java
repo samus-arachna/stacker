@@ -21,10 +21,14 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.GameState;
+import com.mygdx.game.StackerGame;
 
 import static java.lang.Math.abs;
 
 public class MainScreen implements InputProcessor, Screen {
+    // setup game
+    private StackerGame game;
+
     // environment
     private OrthographicCamera camera;
     private ModelBatch modelBatch;
@@ -49,7 +53,10 @@ public class MainScreen implements InputProcessor, Screen {
     private int score;
     private Label scoreLabel;
 
-    public MainScreen() {
+    public MainScreen(StackerGame game) {
+        // setup game
+        this.game = game;
+
         // setup camera
         camera = new OrthographicCamera(480, 800);
         camera.position.set(5f, cameraLevel, 5f);
