@@ -20,7 +20,6 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.GameState;
 import com.mygdx.game.StackerGame;
 
 import static java.lang.Math.abs;
@@ -46,6 +45,7 @@ public class MainScreen implements InputProcessor, Screen {
     private Vector3 boxPosition;
     private int boxLevel = 0;
     private float cameraLevel = 7f;
+    private float gameSpeed = 0.07f;
 
     // text
     private Stage uiStage;
@@ -122,12 +122,12 @@ public class MainScreen implements InputProcessor, Screen {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        calculateBoxes();
+        makeTurn();
 
         return false;
     }
 
-    private void calculateBoxes() {
+    private void makeTurn() {
         int size = instances.size;
 
         // calculate top box stuff
@@ -151,7 +151,7 @@ public class MainScreen implements InputProcessor, Screen {
             float lastSizeZ = abs(lastBound.min.z) + abs(lastBound.max.z);
             spawnSameBox(5f, 1f, lastSizeZ, lastBoxPosition);
             spawnNewBox(5f, 1f, lastSizeZ);
-            incrementScore();
+            incrementStats();
             return;
         }
 
@@ -177,13 +177,14 @@ public class MainScreen implements InputProcessor, Screen {
 
                 spawnNewBox(5f, 1f, newSize);
 
-                incrementScore();
+                incrementStats();
             }
         }
     }
 
-    private void incrementScore() {
+    private void incrementStats() {
         score += 1;
+        gameSpeed += 0.01f;
         scoreLabel.setText("Score: " + score);
     }
 
@@ -193,14 +194,14 @@ public class MainScreen implements InputProcessor, Screen {
 
         if (boxMove == '+') {
             lastBox.transform.getTranslation(boxPosition);
-            lastBox.transform.trn(0, 0, 0.07f);
+            lastBox.transform.trn(0, 0, gameSpeed);
 
             if (boxPosition.z > 7) {
                 boxMove = '-';
             }
         } else if (boxMove == '-') {
             lastBox.transform.getTranslation(boxPosition);
-            lastBox.transform.trn(0, 0, -0.07f);
+            lastBox.transform.trn(0, 0, -gameSpeed);
 
             if (boxPosition.z < -7) {
                 boxMove = '+';
