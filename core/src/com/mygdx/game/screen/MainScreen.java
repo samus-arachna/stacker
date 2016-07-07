@@ -38,7 +38,9 @@ public class MainScreen implements InputProcessor, Screen {
     private ShapeRenderer shapeRenderer;
 
     // colors
-    private Color boxColor = new Color(157/255f, 227/255f, 255/255f, 1);
+    private Color boxDefaultColor = new Color(157/255f, 227/255f, 255/255f, 1);
+    private Color boxSuccessColor = new Color(72/255f, 183/255f, 70/255f, 1);
+    private Color boxFailColor = new Color(202/255f, 76/255f, 76/255f, 1);
 
     // game logic
     private char boxMove = '+';
@@ -46,6 +48,7 @@ public class MainScreen implements InputProcessor, Screen {
     private int boxLevel = 0;
     private float cameraLevel = 7f;
     private float gameSpeed = 0.07f;
+    private float speedFactor = 0.01f;
 
     // text
     private Stage uiStage;
@@ -67,7 +70,7 @@ public class MainScreen implements InputProcessor, Screen {
         modelBuilder = new ModelBuilder();
         Model box = modelBuilder.createBox(
                 5f, 1f, 5f,
-                new Material(ColorAttribute.createDiffuse(boxColor)),
+                new Material(ColorAttribute.createDiffuse(boxDefaultColor)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
         );
         modelInstance = new ModelInstance(box, 0, boxLevel++, 0);
@@ -149,9 +152,10 @@ public class MainScreen implements InputProcessor, Screen {
         if (distance < 0.3) {
             instances.pop();
             float lastSizeZ = abs(lastBound.min.z) + abs(lastBound.max.z);
-            spawnSameBox(5f, 1f, lastSizeZ, lastBoxPosition);
+            spawnSameBox(5f, 1f, lastSizeZ, lastBoxPosition, boxSuccessColor);
             spawnNewBox(5f, 1f, lastSizeZ);
             incrementStats();
+            speedDown();
             return;
         }
 
@@ -169,23 +173,35 @@ public class MainScreen implements InputProcessor, Screen {
 
                 if (lastBoxPosition < topBoxPosition) {
                     float newPos = lastBound.max.z - (newSize / 2) + lastBoxPosition;
-                    spawnSameBox(5f, 1f, newSize, newPos);
+                    spawnSameBox(5f, 1f, newSize, newPos, boxFailColor);
                 } else {
                     float newPos = lastBound.min.z + (newSize / 2) + lastBoxPosition;
-                    spawnSameBox(5f, 1f, newSize, newPos);
+                    spawnSameBox(5f, 1f, newSize, newPos, boxFailColor);
                 }
 
                 spawnNewBox(5f, 1f, newSize);
 
                 incrementStats();
+                speedUp();
             }
         }
     }
 
     private void incrementStats() {
         score += 1;
-        gameSpeed += 0.01f;
         scoreLabel.setText("Score: " + score);
+    }
+
+    private void speedDown() {
+        if (gameSpeed > 0.07f) {
+            gameSpeed -= speedFactor;
+        }
+    }
+
+    private void speedUp() {
+        if (gameSpeed < 0.15f) {
+            gameSpeed += speedFactor;
+        }
     }
 
     // moving box around
@@ -212,7 +228,7 @@ public class MainScreen implements InputProcessor, Screen {
     private void spawnNewBox(float x, float y, float z) {
         Model box = modelBuilder.createBox(
                 x, y, z,
-                new Material(ColorAttribute.createDiffuse(boxColor)),
+                new Material(ColorAttribute.createDiffuse(boxDefaultColor)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
         );
         modelInstance = new ModelInstance(box, 0, boxLevel++, -7);
@@ -220,10 +236,10 @@ public class MainScreen implements InputProcessor, Screen {
         camera.position.set(5f, cameraLevel++, 5f);
     }
 
-    private void spawnSameBox(float x, float y, float z, float pos) {
+    private void spawnSameBox(float x, float y, float z, float pos, Color BoxColor) {
         Model box = modelBuilder.createBox(
                 x, y, z,
-                new Material(ColorAttribute.createDiffuse(boxColor)),
+                new Material(ColorAttribute.createDiffuse(BoxColor)),
                 VertexAttributes.Usage.Position|VertexAttributes.Usage.Normal
         );
         modelInstance = new ModelInstance(box, 0, boxLevel-1, pos);
