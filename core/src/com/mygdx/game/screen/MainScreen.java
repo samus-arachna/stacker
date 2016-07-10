@@ -38,9 +38,10 @@ public class MainScreen implements InputProcessor, Screen {
     private ShapeRenderer shapeRenderer;
 
     // colors
-    private Color boxDefaultColor = new Color(157/255f, 227/255f, 255/255f, 1);
-    private Color boxSuccessColor = new Color(72/255f, 183/255f, 70/255f, 1);
-    private Color boxFailColor = new Color(202/255f, 76/255f, 76/255f, 1);
+    // taken from here https://color.adobe.com/Firenze-color-theme-24198/edit/?copy=true
+    private Color boxDefaultColor = new Color(255/255f, 240/255f, 165/255f, 1);
+    private Color boxSuccessColor = new Color(70/255f, 137/255f, 102/255f, 1);
+    private Color boxFailColor = new Color(182/255f, 73/255f, 38/255f, 1);
 
     // game logic
     private char boxMove = '+';
@@ -110,7 +111,7 @@ public class MainScreen implements InputProcessor, Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT|GL20.GL_DEPTH_BUFFER_BIT);
         camera.update();
 
-        //setupBg();
+        setupBg();
 
         moveBox();
 
@@ -249,9 +250,9 @@ public class MainScreen implements InputProcessor, Screen {
 
     private void setupBg() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        Color c1 = new Color(255/255f, 90/255f, 90/255f, 1);
-        Color c2 = new Color(255/255f, 242/255f, 153/255f, 1);
-        shapeRenderer.rect(0f, 0f, 640f, 680f, c2, c2, c1, c1);
+        Color c1 = new Color(255/255f, 176/255f, 59/255f, 1);
+        Color c2 = new Color(142/255f, 40/255f, 153/255f, 1);
+        shapeRenderer.rect(0f, 0f, 480f, 800f, c2, c2, c1, c1);
         shapeRenderer.end();
     }
 
