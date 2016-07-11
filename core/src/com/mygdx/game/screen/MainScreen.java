@@ -24,7 +24,7 @@ import com.mygdx.game.StackerGame;
 
 import static java.lang.Math.abs;
 
-public class MainScreen implements InputProcessor, Screen {
+class MainScreen implements InputProcessor, Screen {
     // setup game
     private StackerGame game;
 
@@ -39,9 +39,9 @@ public class MainScreen implements InputProcessor, Screen {
 
     // colors
     // taken from here https://color.adobe.com/Firenze-color-theme-24198/edit/?copy=true
-    private Color boxDefaultColor = new Color(255/255f, 240/255f, 165/255f, 1);
-    private Color boxSuccessColor = new Color(70/255f, 137/255f, 102/255f, 1);
-    private Color boxFailColor = new Color(182/255f, 73/255f, 38/255f, 1);
+    private Color boxDefaultColor = new Color(237/255f, 247/255f, 242/255f, 1);
+    private Color boxSuccessColor = new Color(70/255f, 191/255f, 92/255f, 1);
+    private Color boxFailColor = new Color(169/255f, 20/255f, 20/255f, 1);
 
     // game logic
     private char boxMove = '+';
@@ -56,7 +56,7 @@ public class MainScreen implements InputProcessor, Screen {
     private int score;
     private Label scoreLabel;
 
-    public MainScreen(StackerGame game) {
+    MainScreen(StackerGame game) {
         // setup game
         this.game = game;
 
@@ -80,7 +80,7 @@ public class MainScreen implements InputProcessor, Screen {
 
         // setup env
         environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.6f, 0.6f, 0.6f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -5.8f, -0.2f));
 
 
@@ -250,7 +250,7 @@ public class MainScreen implements InputProcessor, Screen {
 
     private void setupBg() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        Color c1 = new Color(255/255f, 176/255f, 59/255f, 1);
+        Color c1 = new Color(255/255f, 238/255f, 173/255f, 1);
         Color c2 = new Color(142/255f, 40/255f, 153/255f, 1);
         shapeRenderer.rect(0f, 0f, 480f, 800f, c2, c2, c1, c1);
         shapeRenderer.end();
