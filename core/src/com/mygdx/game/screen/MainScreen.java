@@ -38,10 +38,9 @@ class MainScreen implements InputProcessor, Screen {
     private ShapeRenderer shapeRenderer;
 
     // colors
-    // taken from here https://color.adobe.com/Firenze-color-theme-24198/edit/?copy=true
     private Color boxDefaultColor = new Color(237/255f, 247/255f, 242/255f, 1);
     private Color boxSuccessColor = new Color(70/255f, 191/255f, 92/255f, 1);
-    private Color boxFailColor = new Color(169/255f, 20/255f, 20/255f, 1);
+    private Color boxFailColor = new Color(186/255f, 76/255f, 44/255f, 1);
 
     // game logic
     private char boxMove = '+';
@@ -50,6 +49,7 @@ class MainScreen implements InputProcessor, Screen {
     private float cameraLevel = 7f;
     private float gameSpeed = 0.07f;
     private float speedFactor = 0.01f;
+    private int perfectStacks = 0;
 
     // text
     private Stage uiStage;
@@ -80,7 +80,7 @@ class MainScreen implements InputProcessor, Screen {
 
         // setup env
         environment = new Environment();
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.6f, 0.6f, 0.6f, 1f));
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
         environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -5.8f, -0.2f));
 
 
@@ -156,7 +156,7 @@ class MainScreen implements InputProcessor, Screen {
             spawnSameBox(5f, 1f, lastSizeZ, lastBoxPosition, boxSuccessColor);
             spawnNewBox(5f, 1f, lastSizeZ);
             incrementStats();
-            speedDown();
+            calculateStack();
             return;
         }
 
@@ -181,10 +181,17 @@ class MainScreen implements InputProcessor, Screen {
                 }
 
                 spawnNewBox(5f, 1f, newSize);
-
                 incrementStats();
-                speedUp();
             }
+        }
+    }
+
+    private void calculateStack() {
+        perfectStacks += 1;
+
+        if (perfectStacks == 3) {
+            speedUp();
+            perfectStacks = 0;
         }
     }
 
