@@ -153,6 +153,9 @@ class MainScreen implements InputProcessor, Screen {
         if (distance < 0.3) {
             instances.pop();
             float lastSizeZ = abs(lastBound.min.z) + abs(lastBound.max.z);
+            if (perfectStacks != 0 && perfectStacks % 5 == 0) {
+                lastSizeZ += 1;
+            }
             spawnSameBox(5f, 1f, lastSizeZ, lastBoxPosition, boxSuccessColor);
             spawnNewBox(5f, 1f, lastSizeZ);
             incrementStats();
@@ -182,6 +185,7 @@ class MainScreen implements InputProcessor, Screen {
 
                 spawnNewBox(5f, 1f, newSize);
                 incrementStats();
+                perfectStacks = 0;
             }
         }
     }
@@ -189,9 +193,8 @@ class MainScreen implements InputProcessor, Screen {
     private void calculateStack() {
         perfectStacks += 1;
 
-        if (perfectStacks == 3) {
+        if (perfectStacks % 3 == 0) {
             speedUp();
-            perfectStacks = 0;
         }
     }
 
