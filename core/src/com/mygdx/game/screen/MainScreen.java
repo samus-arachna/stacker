@@ -153,9 +153,12 @@ class MainScreen implements InputProcessor, Screen {
         if (distance < 0.3) {
             instances.pop();
             float lastSizeZ = abs(lastBound.min.z) + abs(lastBound.max.z);
+
+            // make a bonus - increase size for 5 perfect stacks
             if (perfectStacks != 0 && perfectStacks % 5 == 0) {
                 lastSizeZ += 1;
             }
+            
             spawnSameBox(5f, 1f, lastSizeZ, lastBoxPosition, boxSuccessColor);
             spawnNewBox(5f, 1f, lastSizeZ);
             incrementStats();
