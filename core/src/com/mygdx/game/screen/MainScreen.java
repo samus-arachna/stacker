@@ -97,13 +97,16 @@ class MainScreen implements InputProcessor, Screen {
         uiStage = new Stage();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSerif.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 24;
+        parameter.size = Gdx.graphics.getWidth() / 25;
         BitmapFont font = generator.generateFont(parameter);
         generator.dispose();
         String text = "Score: 0";
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
         scoreLabel = new Label(text, style);
-        scoreLabel.setPosition(340, 750);
+        scoreLabel.setPosition(
+                Gdx.graphics.getWidth() - (Gdx.graphics.getWidth() / 25 * 5),
+                Gdx.graphics.getHeight() - (Gdx.graphics.getHeight() / 15)
+        );
         uiStage.addActor(scoreLabel);
     }
 
@@ -264,9 +267,9 @@ class MainScreen implements InputProcessor, Screen {
 
     private void setupBg() {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        Color c1 = new Color(255/255f, 238/255f, 173/255f, 1);
-        Color c2 = new Color(142/255f, 40/255f, 153/255f, 1);
-        shapeRenderer.rect(0f, 0f, 480f, 800f, c2, c2, c1, c1);
+        Color c2 = new Color(255/255f, 238/255f, 173/255f, 1);
+        Color c1 = new Color(142/255f, 40/255f, 153/255f, 1);
+        shapeRenderer.rect(0f, 0f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), c2, c2, c1, c1);
         shapeRenderer.end();
     }
 

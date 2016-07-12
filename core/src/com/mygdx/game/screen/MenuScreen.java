@@ -1,7 +1,6 @@
 package com.mygdx.game.screen;
 
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
@@ -33,13 +32,17 @@ public class MenuScreen implements InputProcessor, Screen {
         uiStage = new Stage();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSerif.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 24;
+        parameter.size = Gdx.graphics.getWidth() / 20;
         BitmapFont font = generator.generateFont(parameter);
         generator.dispose();
         String text = "Tap Screen To Play";
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
         menuLabel = new Label(text, style);
-        menuLabel.setPosition(130, 400);
+        menuLabel.setPosition(
+                Gdx.graphics.getWidth() / 2 - (Gdx.graphics.getWidth() / 20 * 5),
+                Gdx.graphics.getHeight() / 2
+        );
+
         uiStage.addActor(menuLabel);
     }
 
