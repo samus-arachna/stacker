@@ -40,28 +40,37 @@ class GameOverScreen implements InputProcessor, Screen {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 
         // adding menu label text
-        parameter.size = 24;
+        parameter.size = Gdx.graphics.getWidth() / 25;
         BitmapFont font = generator.generateFont(parameter);
-        String text = "              Game over.\nTap Screen To Play Again.";
+        String text = "Game over. Tap Screen To Play Again.";
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
         menuLabel = new Label(text, style);
-        menuLabel.setPosition(90, 400);
+        menuLabel.setPosition(
+                Gdx.graphics.getWidth() / 2 - (Gdx.graphics.getWidth() / 25 * 9),
+                Gdx.graphics.getHeight() - (Gdx.graphics.getHeight() / 2)
+        );
 
         // adding final score label text
-        parameter.size = 36;
+        parameter.size = Gdx.graphics.getWidth() / 20;
         font = generator.generateFont(parameter);
         text = "Final score: " + finalScore;
         style = new Label.LabelStyle(font, Color.WHITE);
         finalScoreLabel = new Label(text, style);
-        finalScoreLabel.setPosition(125, 700);
+        finalScoreLabel.setPosition(
+                Gdx.graphics.getWidth() / 2 - (Gdx.graphics.getWidth() / 20 * 4),
+                Gdx.graphics.getHeight() - (Gdx.graphics.getHeight() / 4)
+        );
 
         // adding high score label text
-        parameter.size = 32;
+        parameter.size = Gdx.graphics.getWidth() / 20;
         font = generator.generateFont(parameter);
         text = "High score: " + showHighScore();
         style = new Label.LabelStyle(font, Color.WHITE);
         highScoreLabel = new Label(text, style);
-        highScoreLabel.setPosition(125, 600);
+        highScoreLabel.setPosition(
+                Gdx.graphics.getWidth() / 2 - (Gdx.graphics.getWidth() / 20 * 4),
+                Gdx.graphics.getHeight() - (Gdx.graphics.getHeight() / 5)
+        );
 
         // disposing of font generator
         generator.dispose();
