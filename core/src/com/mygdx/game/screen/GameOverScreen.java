@@ -3,6 +3,7 @@ package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -12,7 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.game.StackerGame;
 
-public class LostScreen implements InputProcessor, Screen {
+class GameOverScreen implements InputProcessor, Screen {
 
     // game object
     private StackerGame game;
@@ -21,10 +22,14 @@ public class LostScreen implements InputProcessor, Screen {
     private Stage uiStage;
     private Label menuLabel;
     private Label finalScoreLabel;
+    private Label highScoreLabel;
 
-    public LostScreen(StackerGame game, int finalScore) {
+    GameOverScreen(StackerGame game, int finalScore) {
         // setup game
         this.game = game;
+
+        // saving high score
+        saveHighScore(finalScore);
 
         // setup input
         Gdx.input.setInputProcessor(this);
@@ -50,13 +55,21 @@ public class LostScreen implements InputProcessor, Screen {
         finalScoreLabel = new Label(text, style);
         finalScoreLabel.setPosition(125, 700);
 
+        // adding high score label text
+        parameter.size = 32;
+        font = generator.generateFont(parameter);
+        text = "High score: " + showHighScore();
+        style = new Label.LabelStyle(font, Color.WHITE);
+        highScoreLabel = new Label(text, style);
+        highScoreLabel.setPosition(125, 600);
+
         // disposing of font generator
         generator.dispose();
-
 
         // adding ui actors
         uiStage.addActor(menuLabel);
         uiStage.addActor(finalScoreLabel);
+        uiStage.addActor(highScoreLabel);
     }
 
     @Override
@@ -69,6 +82,21 @@ public class LostScreen implements InputProcessor, Screen {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         game.setScreen(new MainScreen(game));
         return false;
+    }
+
+    private void saveHighScore(int newHighScore) {
+        Preferences prefs = Gdx.app.getPreferences("stacker");
+        int savedHighScore = prefs.getInteger("highScore");
+
+        if (savedHighScore < newHighScore) {
+            prefs.putInteger("highScore", newHighScore);
+            prefs.flush();
+        }
+    }
+
+    private int showHighScore() {
+        Preferences prefs = Gdx.app.getPreferences("stacker");
+        return prefs.getInteger("highScore");
     }
 
     @Override

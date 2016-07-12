@@ -3,6 +3,7 @@ package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -158,7 +159,7 @@ class MainScreen implements InputProcessor, Screen {
             if (perfectStacks != 0 && perfectStacks % 5 == 0) {
                 lastSizeZ += 1;
             }
-            
+
             spawnSameBox(5f, 1f, lastSizeZ, lastBoxPosition, boxSuccessColor);
             spawnNewBox(5f, 1f, lastSizeZ);
             incrementStats();
@@ -174,7 +175,7 @@ class MainScreen implements InputProcessor, Screen {
 
             if (newSize < 0) {
                 System.out.println("You Lost!");
-                game.setScreen(new LostScreen(game, score));
+                game.setScreen(new GameOverScreen(game, score));
             } else {
                 instances.pop();
 
