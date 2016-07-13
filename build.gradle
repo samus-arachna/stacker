@@ -15,7 +15,7 @@ allprojects {
 
     version = '1.0'
     ext {
-        appName = "my-gdx-game"
+        appName = "io-umren-stacker"
         gdxVersion = '1.9.3'
         roboVMVersion = '2.1.0'
         box2DLightsVersion = '1.4'
