@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
 import com.mygdx.game.StackerGame;
 
 class GameOverScreen implements InputProcessor, Screen {
@@ -45,8 +46,9 @@ class GameOverScreen implements InputProcessor, Screen {
         String text = "Game over. Tap Screen To Play Again.";
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
         menuLabel = new Label(text, style);
+        float menuLabelWidth = menuLabel.getWidth();
         menuLabel.setPosition(
-                Gdx.graphics.getWidth() / 2 - (Gdx.graphics.getWidth() / 25 * 9),
+                Gdx.graphics.getWidth() / 2 - menuLabelWidth / 2,
                 Gdx.graphics.getHeight() - (Gdx.graphics.getHeight() / 2)
         );
 
@@ -56,8 +58,9 @@ class GameOverScreen implements InputProcessor, Screen {
         text = "Final score: " + finalScore;
         style = new Label.LabelStyle(font, Color.WHITE);
         finalScoreLabel = new Label(text, style);
+        float finalScoreWidth = finalScoreLabel.getWidth();
         finalScoreLabel.setPosition(
-                Gdx.graphics.getWidth() / 2 - (Gdx.graphics.getWidth() / 20 * 4),
+                Gdx.graphics.getWidth() / 2 - finalScoreWidth / 2,
                 Gdx.graphics.getHeight() - (Gdx.graphics.getHeight() / 4)
         );
 
@@ -67,8 +70,9 @@ class GameOverScreen implements InputProcessor, Screen {
         text = "High score: " + showHighScore();
         style = new Label.LabelStyle(font, Color.WHITE);
         highScoreLabel = new Label(text, style);
+        float highScoreWidth = highScoreLabel.getWidth();
         highScoreLabel.setPosition(
-                Gdx.graphics.getWidth() / 2 - (Gdx.graphics.getWidth() / 20 * 4),
+                Gdx.graphics.getWidth() / 2 - highScoreWidth / 2,
                 Gdx.graphics.getHeight() - (Gdx.graphics.getHeight() / 5)
         );
 

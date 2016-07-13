@@ -28,7 +28,7 @@ public class MenuScreen implements InputProcessor, Screen {
         // setup input
         Gdx.input.setInputProcessor(this);
 
-        // setup label score
+        // setup label tap
         uiStage = new Stage();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSerif.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
@@ -38,8 +38,9 @@ public class MenuScreen implements InputProcessor, Screen {
         String text = "Tap Screen To Play";
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
         menuLabel = new Label(text, style);
+        float menuLabelWidth = menuLabel.getWidth();
         menuLabel.setPosition(
-                Gdx.graphics.getWidth() / 2 - (Gdx.graphics.getWidth() / 20 * 5),
+                Gdx.graphics.getWidth() / 2 - menuLabelWidth / 2,
                 Gdx.graphics.getHeight() / 2
         );
 
