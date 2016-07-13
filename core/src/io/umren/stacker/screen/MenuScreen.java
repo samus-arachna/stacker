@@ -1,4 +1,4 @@
-package com.mygdx.game.screen;
+package io.umren.stacker.screen;
 
 
 import com.badlogic.gdx.Gdx;
@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.mygdx.game.StackerGame;
+import io.umren.stacker.StackerGame;
 
 public class MenuScreen implements InputProcessor, Screen {
 

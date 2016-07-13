@@ -1,4 +1,4 @@
-package com.mygdx.game.screen;
+package io.umren.stacker.screen;
 
 
 import com.badlogic.gdx.Gdx;
@@ -20,7 +20,7 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
-import com.mygdx.game.StackerGame;
+import io.umren.stacker.StackerGame;
 
 import static java.lang.Math.abs;
 

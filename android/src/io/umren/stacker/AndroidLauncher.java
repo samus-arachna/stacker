@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package io.umren.stacker;
 
 import android.os.Bundle;
 
