@@ -3,7 +3,6 @@ package com.mygdx.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -167,6 +166,10 @@ class MainScreen implements InputProcessor, Screen {
             spawnNewBox(5f, 1f, lastSizeZ);
             incrementStats();
             calculateStack();
+
+            // optimization
+            clearInstances();
+
             return;
         }
 
@@ -194,6 +197,18 @@ class MainScreen implements InputProcessor, Screen {
                 incrementStats();
                 perfectStacks = 0;
             }
+        }
+
+        // optimization
+        clearInstances();
+    }
+
+    // if there is more than 50 instances, remove 30 from the start
+    private void clearInstances() {
+        int size = instances.size;
+
+        if (size > 50) {
+            instances.removeRange(0, 30);
         }
     }
 
