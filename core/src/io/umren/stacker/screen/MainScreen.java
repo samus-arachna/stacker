@@ -96,15 +96,16 @@ class MainScreen implements InputProcessor, Screen {
         uiStage = new Stage();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/DroidSerif.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = Gdx.graphics.getWidth() / 25;
+        parameter.size = Gdx.graphics.getWidth() / 15;
         BitmapFont font = generator.generateFont(parameter);
         generator.dispose();
         String text = "Score: 0";
         Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
         scoreLabel = new Label(text, style);
+        float scoreLabelWidth = scoreLabel.getWidth();
         scoreLabel.setPosition(
-                Gdx.graphics.getWidth() - (Gdx.graphics.getWidth() / 25 * 5),
-                Gdx.graphics.getHeight() - (Gdx.graphics.getHeight() / 15)
+                Gdx.graphics.getWidth() / 2 - (scoreLabelWidth / 2),
+                Gdx.graphics.getHeight() - (Gdx.graphics.getHeight() / 10)
         );
         uiStage.addActor(scoreLabel);
     }
